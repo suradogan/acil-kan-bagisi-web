@@ -1,0 +1,155 @@
+:root {
+    --primary-color: #dc3545;
+    --primary-dark: #c82333;
+    --secondary-color: #6c757d;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+/* Navbar styles */
+.navbar-brand i {
+    font-size: 1.5rem;
+}
+
+/* Hero section */
+.hero-section {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 4rem 2rem;
+}
+
+/* Feature icons */
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    font-size: 1.8rem;
+}
+
+.bg-danger-light {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* Stats section */
+.stat-icon {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.counter {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Team section */
+.team-avatar {
+    width: 100px;
+    height: 100px;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Step icons in How it Works */
+.step-icon {
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    font-size: 2rem;
+}
+
+/* Footer */
+footer a {
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.social-links a {
+    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-right: 8px;
+    transition: all 0.3s;
+}
+
+/* Accordion */
+.accordion-button:not(.collapsed) {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--primary-color);
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+/* Forms */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+/* Blood type table */
+.table-danger {
+    --bs-table-bg: rgba(220, 53, 69, 0.1);
+    --bs-table-color: #212529;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 1rem;
+    }
+    
+    .counter {
+        font-size: 2rem;
+    }
+    
+    .step-icon, .feature-icon {
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 1.5rem;
+    }
+}
+
+/* Profile page */
+.profile-sidebar {
+    border-radius: 10px;
+}
+
+.profile-usertitle {
+    margin-bottom: 20px;
+}
+
+.profile-usertitle-name {
+    color: #333;
+}
+
+.profile-stats {
+    margin-top: 20px;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+} 

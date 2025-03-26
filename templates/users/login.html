@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Giriş Yap - Acil Kan Bağışı{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <i class="fas fa-sign-in-alt fa-3x text-danger mb-3"></i>
+                    <h2 class="fw-bold">Giriş Yap</h2>
+                    <p class="text-muted">Hesabınıza giriş yaparak kan bağışı sürecine katkıda bulunun</p>
+                </div>
+                
+                {% if messages %}
+                <div class="alert alert-danger">
+                    {% for message in messages %}
+                    <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Kullanıcı Adı</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Şifre</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                        <label class="form-check-label" for="remember">Beni hatırla</label>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-danger btn-lg">Giriş Yap</button>
+                    </div>
+                </form>
+                
+                <div class="text-center mt-4">
+                    <p>Hesabınız yok mu? <a href="{% url 'users:register' %}" class="text-danger">Kayıt Olun</a></p>
+                    <p><a href="/password-reset/" class="text-secondary">Şifrenizi mi unuttunuz?</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

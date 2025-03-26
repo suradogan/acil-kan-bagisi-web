@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil - Acil Kan Bağışı{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <i class="fas fa-user-circle fa-3x text-danger mb-3"></i>
+                    <h2 class="fw-bold">Profil Bilgileri</h2>
+                    <p class="text-muted">Kişisel bilgilerinizi güncelleyebilirsiniz</p>
+                </div>
+                
+                {% if messages %}
+                <div class="alert alert-success">
+                    {% for message in messages %}
+                    <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="profile-sidebar p-3 bg-light rounded">
+                            <div class="profile-usertitle text-center">
+                                <div class="profile-usertitle-name mb-2 fw-bold fs-5">
+                                    {{ user.get_full_name|default:user.username }}
+                                </div>
+                                <div class="profile-usertitle-job mb-2 text-muted">
+                                    {% if user.is_hospital %}Hastane Temsilcisi{% else %}Kan Bağışçısı{% endif %}
+                                </div>
+                                <div class="profile-usertitle-info">
+                                    <p><i class="fas fa-envelope me-2"></i> {{ user.email }}</p>
+                                    <p><i class="fas fa-phone me-2"></i> {{ user.phone }}</p>
+                                    <p><i class="fas fa-map-marker-alt me-2"></i> {{ user.city }}, {{ user.district }}</p>
+                                    <p><i class="fas fa-tint me-2"></i> {{ user.get_blood_type_display }}</p>
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="profile-stats text-center">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="stat-value text-danger fw-bold">{{ user.donations.count }}</div>
+                                        <div class="stat-label">Bağışlar</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="stat-value text-danger fw-bold">
+                                            {% if user.last_donation_date %}
+                                                {{ user.last_donation_date|date:"d.m.Y" }}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </div>
+                                        <div class="stat-label">Son Bağış</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <form method="post">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="first_name" class="form-label">Ad</label>
+                                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ form.first_name.value|default:'' }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="last_name" class="form-label">Soyad</label>
+                                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ form.last_name.value|default:'' }}">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">E-posta Adresi</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ form.email.value }}">
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="blood_type" class="form-label">Kan Grubu</label>
+                                    <select class="form-select" id="blood_type" name="blood_type">
+                                        {% for value, display in form.fields.blood_type.choices %}
+                                            <option value="{{ value }}" {% if form.blood_type.value == value %}selected{% endif %}>{{ display }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Telefon</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ form.phone.value }}">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="city" class="form-label">Şehir</label>
+                                    <input type="text" class="form-control" id="city" name="city" value="{{ form.city.value }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="district" class="form-label">İlçe</label>
+                                    <input type="text" class="form-control" id="district" name="district" value="{{ form.district.value }}">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="last_donation_date" class="form-label">Son Bağış Tarihi</label>
+                                <input type="date" class="form-control" id="last_donation_date" name="last_donation_date" value="{{ form.last_donation_date.value|date:'Y-m-d'|default:'' }}">
+                                <div class="form-text">Eğer daha önce kan bağışı yaptıysanız son bağış tarihinizi belirtebilirsiniz.</div>
+                            </div>
+                            
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-danger">Profili Güncelle</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

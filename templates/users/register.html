@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Kayıt Ol - Acil Kan Bağışı{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <i class="fas fa-user-plus fa-3x text-danger mb-3"></i>
+                    <h2 class="fw-bold">Kayıt Ol</h2>
+                    <p class="text-muted">Acil Kan Bağışı platformuna üye olarak hayat kurtarmaya yardımcı olun</p>
+                </div>
+                
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    Lütfen formdaki hataları düzeltin.
+                </div>
+                {% endif %}
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="username" class="form-label">Kullanıcı Adı*</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                            {% if form.username.errors %}
+                            <div class="text-danger mt-1">{{ form.username.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">E-posta Adresi*</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            {% if form.email.errors %}
+                            <div class="text-danger mt-1">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="password1" class="form-label">Şifre*</label>
+                            <input type="password" class="form-control" id="password1" name="password1" required>
+                            {% if form.password1.errors %}
+                            <div class="text-danger mt-1">{{ form.password1.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="password2" class="form-label">Şifre Tekrar*</label>
+                            <input type="password" class="form-control" id="password2" name="password2" required>
+                            {% if form.password2.errors %}
+                            <div class="text-danger mt-1">{{ form.password2.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="first_name" class="form-label">Ad</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="last_name" class="form-label">Soyad</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="blood_type" class="form-label">Kan Grubu*</label>
+                            <select class="form-select" id="blood_type" name="blood_type" required>
+                                <option value="" selected disabled>Kan grubunuzu seçin</option>
+                                <option value="A+">A RhD positive (A+)</option>
+                                <option value="A-">A RhD negative (A-)</option>
+                                <option value="B+">B RhD positive (B+)</option>
+                                <option value="B-">B RhD negative (B-)</option>
+                                <option value="O+">O RhD positive (O+)</option>
+                                <option value="O-">O RhD negative (O-)</option>
+                                <option value="AB+">AB RhD positive (AB+)</option>
+                                <option value="AB-">AB RhD negative (AB-)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label">Telefon*</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="city" class="form-label">Şehir*</label>
+                            <input type="text" class="form-control" id="city" name="city" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="district" class="form-label">İlçe*</label>
+                            <input type="text" class="form-control" id="district" name="district" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="is_hospital" name="is_hospital">
+                        <label class="form-check-label" for="is_hospital">Hastane temsilcisiyim</label>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                        <label class="form-check-label" for="terms">
+                            <a href="/terms/" class="text-danger">Kullanım koşullarını</a> ve <a href="/privacy/" class="text-danger">gizlilik politikasını</a> okudum, kabul ediyorum.
+                        </label>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-danger btn-lg">Kayıt Ol</button>
+                    </div>
+                </form>
+                
+                <div class="text-center mt-4">
+                    <p>Zaten bir hesabınız var mı? <a href="{% url 'users:login' %}" class="text-danger">Giriş Yapın</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

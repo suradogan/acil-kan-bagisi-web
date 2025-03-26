@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}Ana Sayfa - Acil Kan Bağışı{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Acil Kan Bağışı Platformuna Hoş Geldiniz</h1>
+    <p class="lead">Kan bağışı hayat kurtarır!</p>
+</div>
+
+<div class="hero-section text-center py-5 mb-5">
+    <h1 class="display-4 fw-bold text-danger mb-4">Acil Kan Bağışı Platformuna Hoş Geldiniz</h1>
+    <p class="lead mb-5">Her bağış bir hayat kurtarır. Acil durumlarda kan bağışı yapmak veya ihtiyaç durumunda kan bulmak için platformumuzu kullanabilirsiniz.</p>
+    
+    <div class="d-flex justify-content-center gap-3">
+        {% if user.is_authenticated %}
+            {% if user.is_hospital %}
+            <a href="/hospitals/dashboard/" class="btn btn-danger btn-lg">Kan İhtiyacı Oluştur</a>
+            {% else %}
+            <a href="/donations/new/" class="btn btn-danger btn-lg">Kan Bağışı Yap</a>
+            {% endif %}
+        {% else %}
+        <a href="/register/" class="btn btn-danger btn-lg">Kayıt Ol</a>
+        <a href="/login/" class="btn btn-outline-danger btn-lg">Giriş Yap</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="stats-section py-4 mb-5 bg-light rounded">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-3 mb-md-0">
+                <div class="stat-item">
+                    <div class="stat-icon text-danger mb-2">
+                        <i class="fas fa-users fa-3x"></i>
+                    </div>
+                    <h3 class="counter">{{ user_count|default:"0" }}</h3>
+                    <p class="text-muted">Kayıtlı Bağışçı</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+                <div class="stat-item">
+                    <div class="stat-icon text-danger mb-2">
+                        <i class="fas fa-hospital fa-3x"></i>
+                    </div>
+                    <h3 class="counter">{{ hospital_count|default:"0" }}</h3>
+                    <p class="text-muted">Kayıtlı Hastane</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-item">
+                    <div class="stat-icon text-danger mb-2">
+                        <i class="fas fa-heartbeat fa-3x"></i>
+                    </div>
+                    <h3 class="counter">{{ donation_count|default:"0" }}</h3>
+                    <p class="text-muted">Gerçekleşen Bağış</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features-section mb-5">
+    <h2 class="text-center mb-5">Platformumuzun Özellikleri</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-danger-light text-danger rounded-circle mb-3 mx-auto">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h4 class="card-title">Acil Kan İhtiyacı Bildirimi</h4>
+                    <p class="card-text">Hastaneler, acil kan ihtiyaçlarını platform üzerinden bildirebilir ve uygun kan grubu olan bağışçılarla hızlıca iletişime geçebilir.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-danger-light text-danger rounded-circle mb-3 mx-auto">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h4 class="card-title">Düzenli Bağış Takibi</h4>
+                    <p class="card-text">Bağışçılar, son bağış tarihlerini takip edebilir ve yeni bağış yapabilecekleri zamanı öğrenebilirler.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon bg-danger-light text-danger rounded-circle mb-3 mx-auto">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h4 class="card-title">Hastane Konumları</h4>
+                    <p class="card-text">Size en yakın hastaneleri harita üzerinde görebilir ve kolayca ulaşabilirsiniz.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="blood-info-section py-4 bg-light rounded mb-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Kan Grupları Hakkında</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-danger">
+                    <tr>
+                        <th>Kan Grubu</th>
+                        <th>Alabileceği Kan Grupları</th>
+                        <th>Kan Verebileceği Gruplar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A Rh+</td>
+                        <td>A Rh+, A Rh-, O Rh+, O Rh-</td>
+                        <td>A Rh+, AB Rh+</td>
+                    </tr>
+                    <tr>
+                        <td>A Rh-</td>
+                        <td>A Rh-, O Rh-</td>
+                        <td>A Rh+, A Rh-, AB Rh+, AB Rh-</td>
+                    </tr>
+                    <tr>
+                        <td>B Rh+</td>
+                        <td>B Rh+, B Rh-, O Rh+, O Rh-</td>
+                        <td>B Rh+, AB Rh+</td>
+                    </tr>
+                    <tr>
+                        <td>B Rh-</td>
+                        <td>B Rh-, O Rh-</td>
+                        <td>B Rh+, B Rh-, AB Rh+, AB Rh-</td>
+                    </tr>
+                    <tr>
+                        <td>AB Rh+</td>
+                        <td>Tüm Kan Grupları</td>
+                        <td>AB Rh+</td>
+                    </tr>
+                    <tr>
+                        <td>AB Rh-</td>
+                        <td>A Rh-, B Rh-, AB Rh-, O Rh-</td>
+                        <td>AB Rh+, AB Rh-</td>
+                    </tr>
+                    <tr>
+                        <td>O Rh+</td>
+                        <td>O Rh+, O Rh-</td>
+                        <td>A Rh+, B Rh+, AB Rh+, O Rh+</td>
+                    </tr>
+                    <tr>
+                        <td>O Rh-</td>
+                        <td>O Rh-</td>
+                        <td>Tüm Kan Grupları</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %} 

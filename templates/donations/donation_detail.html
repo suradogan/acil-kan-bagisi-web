@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}Bağış Detayı - Acil Kan Bağışı{% endblock %}
+
+{% block content %}
+<div class="mb-4 d-flex justify-content-between align-items-center">
+    <h2>Bağış Detayı #{{ donation.id }}</h2>
+    <a href="{% url 'donations:list' %}" class="btn btn-outline-danger">
+        <i class="fas fa-arrow-left me-2"></i>Listeye Dön
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">Bağış Bilgileri</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Bağışçı</p>
+                        <p class="fw-bold">{{ donation.donor.get_full_name|default:donation.donor.username }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Hastane</p>
+                        <p class="fw-bold">{{ donation.hospital.name }}</p>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Bağış Tarihi</p>
+                        <p class="fw-bold">{{ donation.donation_date|date:"d F Y, H:i" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Oluşturulma Tarihi</p>
+                        <p class="fw-bold">{{ donation.created_at|date:"d F Y, H:i" }}</p>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Kan Grubu</p>
+                        <p><span class="badge bg-danger fs-6">{{ donation.blood_type }}</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Miktar</p>
+                        <p class="fw-bold">{{ donation.amount }} ml</p>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="text-muted mb-1">Durum</p>
+                        <p>
+                            {% if donation.status == 'pending' %}
+                            <span class="badge bg-warning text-dark fs-6">Bekliyor</span>
+                            {% elif donation.status == 'completed' %}
+                            <span class="badge bg-success fs-6">Tamamlandı</span>
+                            {% elif donation.status == 'cancelled' %}
+                            <span class="badge bg-danger fs-6">İptal Edildi</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                
+                {% if donation.notes %}
+                <hr>
+                <div class="mb-0">
+                    <p class="text-muted mb-1">Notlar</p>
+                    <p>{{ donation.notes }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">Bağış Durumu</h5>
+            </div>
+            <div class="card-body">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-success"></div>
+                        <div class="timeline-content">
+                            <h6 class="timeline-title">Bağış Kaydedildi</h6>
+                            <p class="timeline-date">{{ donation.created_at|date:"d.m.Y H:i" }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker {% if donation.status != 'pending' %}bg-success{% else %}bg-light{% endif %}"></div>
+                        <div class="timeline-content">
+                            <h6 class="timeline-title">Bağış Onaylandı</h6>
+                            {% if donation.status != 'pending' %}
+                            <p class="timeline-date">{{ donation.updated_at|date:"d.m.Y H:i" }}</p>
+                            {% else %}
+                            <p class="text-muted">Bekleniyor...</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker {% if donation.status == 'completed' %}bg-success{% else %}bg-light{% endif %}"></div>
+                        <div class="timeline-content">
+                            <h6 class="timeline-title">Bağış Tamamlandı</h6>
+                            {% if donation.status == 'completed' %}
+                            <p class="timeline-date">{{ donation.updated_at|date:"d.m.Y H:i" }}</p>
+                            {% else %}
+                            <p class="text-muted">Bekleniyor...</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% if user.is_hospital and donation.status == 'pending' %}
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">İşlemler</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="#" class="btn btn-success">
+                        <i class="fas fa-check-circle me-2"></i>Bağışı Onayla
+                    </a>
+                    <a href="#" class="btn btn-danger">
+                        <i class="fas fa-times-circle me-2"></i>Bağışı Reddet
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+    
+    .timeline-item {
+        position: relative;
+        padding-bottom: 30px;
+    }
+    
+    .timeline-item:last-child {
+        padding-bottom: 0;
+    }
+    
+    .timeline-marker {
+        position: absolute;
+        left: -30px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+    }
+    
+    .timeline-item:not(:last-child) .timeline-marker:before {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 15px;
+        height: calc(100% + 15px);
+        width: 2px;
+        background-color: #e9ecef;
+    }
+    
+    .timeline-title {
+        margin-bottom: 5px;
+    }
+    
+    .timeline-date {
+        font-size: 0.9em;
+        color: #6c757d;
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %} 

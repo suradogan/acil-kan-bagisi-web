@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Kan Bağışlarım - Acil Kan Bağışı{% endblock %}
+
+{% block content %}
+<div class="mb-4 d-flex justify-content-between align-items-center">
+    <h2>{% if user.is_hospital %}Alınan Bağışlar{% else %}Bağış Geçmişim{% endif %}</h2>
+    {% if not user.is_hospital %}
+    <a href="{% url 'donations:create' %}" class="btn btn-danger">
+        <i class="fas fa-plus-circle me-2"></i>Yeni Bağış
+    </a>
+    {% endif %}
+</div>
+
+{% if messages %}
+<div class="alert alert-success mb-4">
+    {% for message in messages %}
+    <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if donations %}
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        {% if user.is_hospital %}
+                        <th>Bağışçı</th>
+                        {% else %}
+                        <th>Hastane</th>
+                        {% endif %}
+                        <th>Tarih</th>
+                        <th>Kan Grubu</th>
+                        <th>Miktar</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for donation in donations %}
+                    <tr>
+                        <td>#{{ donation.id }}</td>
+                        {% if user.is_hospital %}
+                        <td>{{ donation.donor.get_full_name|default:donation.donor.username }}</td>
+                        {% else %}
+                        <td>{{ donation.hospital.name }}</td>
+                        {% endif %}
+                        <td>{{ donation.donation_date|date:"d.m.Y H:i" }}</td>
+                        <td><span class="badge bg-danger">{{ donation.blood_type }}</span></td>
+                        <td>{{ donation.amount }} ml</td>
+                        <td>
+                            {% if donation.status == 'pending' %}
+                            <span class="badge bg-warning text-dark">Bekliyor</span>
+                            {% elif donation.status == 'completed' %}
+                            <span class="badge bg-success">Tamamlandı</span>
+                            {% elif donation.status == 'cancelled' %}
+                            <span class="badge bg-danger">İptal Edildi</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'donations:detail' donation.id %}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">
+    {% if user.is_hospital %}
+    <p>Henüz hiç kan bağışı alınmamış.</p>
+    {% else %}
+    <p>Henüz hiç kan bağışı yapmamışsınız. <a href="{% url 'donations:create' %}" class="alert-link">Hemen bağış yapın</a>.</p>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %} 

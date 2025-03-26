@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Yeni Kan Bağışı - Acil Kan Bağışı{% endblock %}
+
+{% block content %}
+<div class="mb-4 d-flex justify-content-between align-items-center">
+    <h2>Yeni Kan Bağışı</h2>
+    <a href="{% url 'donations:list' %}" class="btn btn-outline-danger">
+        <i class="fas fa-arrow-left me-2"></i>Listeye Dön
+    </a>
+</div>
+
+{% if messages %}
+<div class="alert alert-danger mb-4">
+    {% for message in messages %}
+    <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="hospital" class="form-label">Hastane</label>
+                        <select class="form-select" id="hospital" name="hospital" required>
+                            <option value="" selected disabled>Hastane seçiniz</option>
+                            {% for hospital in hospitals %}
+                            <option value="{{ hospital.id }}">{{ hospital.name }} - {{ hospital.city }}, {{ hospital.district }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="donation_date" class="form-label">Bağış Tarihi</label>
+                        <input type="datetime-local" class="form-control" id="donation_date" name="donation_date" required>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="blood_type" class="form-label">Kan Grubu</label>
+                            <select class="form-select" id="blood_type" name="blood_type" required>
+                                {% for value, display in form.fields.blood_type.choices %}
+                                <option value="{{ value }}" {% if form.blood_type.value == value %}selected{% endif %}>{{ display }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="amount" class="form-label">Miktar (ml)</label>
+                            <input type="number" class="form-control" id="amount" name="amount" value="450" min="100" max="500" required>
+                            <div class="form-text">Standart bir kan bağışı 450 ml'dir.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notlar</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-danger btn-lg">Bağış Kaydını Oluştur</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
