@@ -5,6 +5,6 @@ app_name = 'donations'
 
 urlpatterns = [
     path('', views.donation_list, name='list'),
-    path('new/', views.donation_create, name='create'),
-    path('<int:pk>/', views.donation_detail, name='detail'),
+    path('create/', views.create_donation, name='create'),
+    path('emergency/', views.emergency_requests, name='emergency'),
 ] 

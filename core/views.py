@@ -7,7 +7,12 @@ from hospitals.models import Hospital
 from donations.models import BloodDonation
 
 def home(request):
-    return render(request, 'core/home.html')
+    context = {
+        'total_donors': 0,  # Şimdilik statik değerler
+        'total_hospitals': 0,
+        'total_donations': 0,
+    }
+    return render(request, 'core/home.html', context)
 
 def about(request):
     return render(request, 'core/about.html')

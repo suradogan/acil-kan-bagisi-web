@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.hospital_list, name='list'),
     path('<int:pk>/', views.hospital_detail, name='detail'),
     path('dashboard/', views.hospital_dashboard, name='dashboard'),
+    path('map/', views.hospital_map, name='map'),
 ] 

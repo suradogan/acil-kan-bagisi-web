@@ -8,34 +8,33 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
+    padding-top: 76px;
 }
 
-/* Navbar styles */
+/* Navbar */
 .navbar-brand i {
     font-size: 1.5rem;
 }
 
-/* Hero section */
+/* Hero Section */
 .hero-section {
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    padding: 4rem 2rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
 }
 
-/* Feature icons */
+/* Feature Icons */
 .feature-icon {
-    width: 70px;
-    height: 70px;
-    line-height: 70px;
-    font-size: 1.8rem;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    font-size: 2rem;
+    margin: 0 auto;
 }
 
 .bg-danger-light {
     background-color: rgba(220, 53, 69, 0.1);
 }
 
-/* Stats section */
+/* Stats Section */
 .stat-icon {
     height: 80px;
     display: flex;
@@ -43,37 +42,34 @@ body {
     align-items: center;
 }
 
-.counter {
+.stat-number {
     font-size: 2.5rem;
     font-weight: bold;
     color: var(--primary-color);
+    margin-bottom: 0.5rem;
 }
 
-/* Team section */
-.team-avatar {
-    width: 100px;
-    height: 100px;
-    background-color: #f8f9fa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Cards */
+.card {
+    transition: transform 0.2s ease-in-out;
 }
 
-/* Step icons in How it Works */
-.step-icon {
-    width: 80px;
-    height: 80px;
-    line-height: 80px;
-    font-size: 2rem;
+.card:hover {
+    transform: translateY(-5px);
 }
 
 /* Footer */
-footer a {
-    text-decoration: none;
+.footer {
+    background-color: var(--dark-color);
 }
 
-footer a:hover {
-    text-decoration: underline;
+.footer a {
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.footer a:hover {
+    color: var(--primary-color) !important;
 }
 
 .social-links a {
@@ -84,43 +80,35 @@ footer a:hover {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    margin-right: 8px;
     transition: all 0.3s;
 }
 
-/* Accordion */
-.accordion-button:not(.collapsed) {
-    background-color: rgba(220, 53, 69, 0.1);
-    color: var(--primary-color);
+.social-links a:hover {
+    background-color: var(--primary-color);
+    color: white !important;
 }
 
-.accordion-button:focus {
-    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+/* Buttons */
+.btn {
+    border-radius: 5px;
+    padding: 0.5rem 1.5rem;
 }
 
-/* Forms */
-.form-control:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
-}
-
-/* Blood type table */
-.table-danger {
-    --bs-table-bg: rgba(220, 53, 69, 0.1);
-    --bs-table-color: #212529;
+.btn-lg {
+    padding: 0.75rem 2rem;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .hero-section {
-        padding: 2rem 1rem;
+        text-align: center;
     }
     
-    .counter {
+    .stat-number {
         font-size: 2rem;
     }
     
-    .step-icon, .feature-icon {
+    .feature-icon {
         width: 60px;
         height: 60px;
         line-height: 60px;

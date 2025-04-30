@@ -20,12 +20,23 @@ from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from users.views import UserViewSet
 from hospitals.views import HospitalViewSet
-from donations.views import BloodDonationViewSet
+from donations.views import (
+    BloodDonationViewSet, 
+    EmergencyBloodRequestViewSet,
+    BloodDonationResponseViewSet
+)
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'hospitals', HospitalViewSet)
 router.register(r'donations', BloodDonationViewSet)
+router.register(r'emergency-requests', EmergencyBloodRequestViewSet)
+router.register(r'donation-responses', BloodDonationResponseViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,4 +46,8 @@ urlpatterns = [
     path('', include('users.urls')),
     path('donations/', include('donations.urls')),
     path('hospitals/', include('hospitals.urls')),
+    # JWT URL'leri
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Hastaneler - Acil Kan Bağışı{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-3">
+                <i class="fas fa-hospital me-2 text-danger"></i>
+                Hastaneler ve Kan Bağış Merkezleri
+            </h1>
+            <p class="text-muted">Kan bağışı yapabileceğiniz hastaneler ve kan merkezleri listesi. Konumunuza en yakın merkezleri bulmak için haritaya göz atabilirsiniz.</p>
+        </div>
+        <div class="col-md-4 text-md-end my-auto">
+            <a href="{% url 'hospitals:map' %}" class="btn btn-outline-danger">
+                <i class="fas fa-map-marker-alt me-2"></i> Haritada Göster
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5 class="mb-0">Hastane Listesi</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="hospitalSearch" class="form-control" placeholder="Hastane ara...">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Hastane Adı</th>
+                                    <th>Şehir</th>
+                                    <th>İlçe</th>
+                                    <th>Telefon</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hospitalTableBody">
+                                {% for hospital in hospitals %}
+                                <tr>
+                                    <td>{{ hospital.name }}</td>
+                                    <td>{{ hospital.city }}</td>
+                                    <td>{{ hospital.district }}</td>
+                                    <td>{{ hospital.phone }}</td>
+                                    <td>
+                                        <a href="{% url 'hospitals:detail' hospital.id %}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-info-circle"></i> Detaylar
+                                        </a>
+                                        {% if user.is_authenticated and user.can_donate %}
+                                        <a href="{% url 'donations:create' %}?hospital={{ hospital.id }}" class="btn btn-sm btn-success ms-1">
+                                            <i class="fas fa-tint"></i> Bağış Yap
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4">
+                                        <div class="alert alert-info mb-0">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            Henüz hastane kaydı bulunmamaktadır.
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Acil Kan İhtiyacı Bulunan Hastaneler</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for hospital in hospitals %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 border-{% if forloop.counter|divisibleby:3 %}danger{% elif forloop.counter|divisibleby:2 %}warning{% else %}primary{% endif %}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ hospital.name }}</h5>
+                                    <p class="card-text">
+                                        <i class="fas fa-map-marker-alt text-muted me-2"></i> {{ hospital.city }}, {{ hospital.district }}
+                                    </p>
+                                    <p class="card-text">
+                                        <i class="fas fa-phone text-muted me-2"></i> {{ hospital.phone }}
+                                    </p>
+                                    <p class="card-text">
+                                        <i class="fas fa-envelope text-muted me-2"></i> {{ hospital.email }}
+                                    </p>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a href="{% url 'hospitals:detail' hospital.id %}" class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-info-circle me-1"></i> Detaylar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-info mb-0">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Şu anda acil kan ihtiyacı bildiren hastane bulunmamaktadır.
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hastane arama fonksiyonu
+        const searchInput = document.getElementById('hospitalSearch');
+        const tableBody = document.getElementById('hospitalTableBody');
+        const rows = tableBody.querySelectorAll('tr');
+        
+        searchInput.addEventListener('keyup', function() {
+            const searchText = searchInput.value.toLowerCase();
+            
+            rows.forEach(row => {
+                const hospitalName = row.cells[0].textContent.toLowerCase();
+                const city = row.cells[1].textContent.toLowerCase();
+                const district = row.cells[2].textContent.toLowerCase();
+                
+                if (hospitalName.includes(searchText) || 
+                    city.includes(searchText) || 
+                    district.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %} 
